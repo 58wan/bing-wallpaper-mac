@@ -4,14 +4,15 @@ Automatically update your macOS wallpaper with Bing's daily image.
 
 ## ✨ Features
 
-- 🔄 Auto-updates wallpaper every hour
-- 🖼️ Downloads high-quality images from Bing
-- 🧹 Supports multiple resolutions (4K, Full HD, HD)
-- 🔍 Auto-detects screen resolution
-- 🧹 Auto-cleans wallpapers older than 7 days
-- ⚙️ Configurable settings
-- 💪 Lightweight and efficient
-- ⚡️ Easy to install and use
+- 💪 Fix the exception where BIN-DIR is empty during installation.
+- 🔄 Auto-updates wallpaper at 11:00 every day. Because only one picture per day.
+- 🔍 Add -r random set wallpaper
+
+## 💡 Tips
+
+- During the installation process, I found that the default value must also be entered when setting config.
+- Updating every hour is useless because Bing only updates one wallpaper per day. You can set the timing of scheduled tasks in install.sh.
+- Add a function to randomly select a downloaded wallpaper, which can manually add fun!
 
 ## 🚀 Installation
 
@@ -19,6 +20,7 @@ Automatically update your macOS wallpaper with Bing's daily image.
 
 - macOS 10.12 or later
 - [jq](https://stedolan.github.io/jq/) (JSON processor)
+  
   ```bash
   # Install using Homebrew
   brew install jq
@@ -29,9 +31,16 @@ Automatically update your macOS wallpaper with Bing's daily image.
 
 ### Install
 
-Simply run the script:
+Clone Code:
 ```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/luoling8192/bing-wallpaper-mac/HEAD/install.sh)"
+git clone https://github.com/58wan/bing-wallpaper-mac.git
+```
+
+Simply run the script:
+
+```bash
+cd bing-wallpaper-mac
+./install.sh
 ```
 
 ## 🗑️ Configuration
@@ -55,7 +64,8 @@ Configuration options include:
 
 To remove the app:
 ```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/luoling8192/bing-wallpaper-mac/HEAD/uninstall.sh)"
+cd bing-wallpaper-mac
+./uninstall.sh
 ```
 
 ## 📁 File Structure
@@ -79,17 +89,3 @@ Feel free to submit issues and enhancement requests!
 
 MIT License - feel free to use and modify as you like!
 
-## 🙏 Acknowledgments
-
-- Bing for providing beautiful daily images
-- macOS community for inspiration
-
-## 💡 Tips
-
-- The script runs hourly to check for new wallpapers
-- Images are downloaded based on your screen resolution by default
-- Each wallpaper includes a text file with its title and copyright information
-- Old wallpapers are automatically cleaned up after 7 days (configurable)
-
----
-Made with ❤️ for macOS users
