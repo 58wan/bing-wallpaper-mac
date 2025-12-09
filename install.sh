@@ -10,7 +10,8 @@ NC='\033[0m'
 WALLPAPER_DIR="$HOME/.wallpapers"
 CONFIG_DIR="$HOME/.config/bing-wallpaper"
 SCRIPT_NAME="bing_wallpaper"
-SCRIPT_PATH="/usr/local/bin/${SCRIPT_NAME}"
+BIN_DIR="/usr/local/bin"
+SCRIPT_PATH="${BIN_DIR}/${SCRIPT_NAME}"
 
 # Check for jq dependency
 check_dependencies() {
@@ -29,6 +30,7 @@ install_or_update() {
     # Create required directories
     mkdir -p "$WALLPAPER_DIR"
     mkdir -p "$CONFIG_DIR"
+    sudo mkdir -p "$BIN_DIR"
 
     # Copy main script and set permissions
     sudo cp ${SCRIPT_NAME}.sh ${SCRIPT_PATH}
@@ -47,8 +49,13 @@ install_or_update() {
         <string>${SCRIPT_PATH}</string>
         <string>--force</string>
     </array>
-    <key>StartInterval</key>
-    <integer>3600</integer>
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>11</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
     <key>StandardErrorPath</key>
     <string>${HOME}/.wallpapers/bing_wallpaper.err</string>
     <key>StandardOutPath</key>
