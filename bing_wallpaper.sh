@@ -230,6 +230,59 @@ download_bing_wallpaper() {
     return 0
 }
 
+# Random an image set wallpaper
+random_set_wallpaper() {
+    # Normal operation
+    load_config
+    if [ $? -ne 0 ]; then
+        echo "✗ Failed loading config"
+        exit 1
+    fi
+
+    # check SAVE_PATH
+    if [ -z "$SAVE_PATH" ]; then
+        echo "✗ Failed loading SAVE_PATH"
+        return 1
+    fi
+
+    if [ ! -d "$SAVE_PATH" ]; then
+        echo "✗ Not exist SAVE_PATH"
+        return 1
+    fi
+    
+    # find jpg
+    local jpg_files=()
+
+    while IFS= read -r -d '' file; do
+        jpg_files+=("$file")
+    done < <(find "$SAVE_PATH" -type f \( -iname "*.jpg" -o -iname "*.jpeg" \) -print0)
+
+    if [ ${#jpg_files[@]} -eq 0 ]; then
+        echo "✗ SAVE_PATH not find jpg"
+        return 1
+    fi
+    
+    # random
+    local random_index=$((RANDOM % ${#jpg_files[@]}))
+    local selected_file="${jpg_files[$random_index]}"
+    
+    echo "✓ Random selected file: $selected_file"
+    
+    # set_wallpaper
+    if type set_wallpaper &>/dev/null; then
+        set_wallpaper "$selected_file"
+        if [ $? -eq 0 ]; then
+             echo "✓ Wallpaper update completed"
+        else
+            echo "✗ Failed to update wallpaper"
+            return 1
+        fi
+    else
+        echo "✗ Not find set_wallpaper()"
+        return 1
+    fi
+}
+
 # Set desktop wallpaper
 set_wallpaper() {
     wallpaper_path=$1
@@ -258,6 +311,7 @@ main() {
         echo "  --config          Configure settings"
         echo "  --show-config     Show current configuration"
         echo "  --force, -f       Force download without asking"
+        echo "  --random, -r      Random an image set wallpaper"
         exit 0
         ;;
     --config)
@@ -266,6 +320,10 @@ main() {
         ;;
     --show-config)
         show_config
+        exit 0
+        ;;
+    --random | -r)
+        random_set_wallpaper
         exit 0
         ;;
     esac
